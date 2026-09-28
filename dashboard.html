@@ -4,205 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - TindaTrack Inventory</title>
-    <style>
-        /* Base Reset & Variables */
-        :root {
-            --accent-danger: #D32F2F; 
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background-color: #F8C86C;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Top Header */
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 15px 30px;
-        }
-
-        .logo {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .date-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-align: right;
-            font-size: 1.2rem;
-            color: #000;
-        }
-
-        .date-text .day-bold {
-            font-weight: bold;
-            display: block;
-            font-size: 1.4rem;
-        }
-
-        .calendar-icon {
-            height: 50px;
-            width: auto;
-        }
-
-        /* Navigation Bar */
-        .main-nav {
-            background-color: #FF9966;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 40px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 50px;
-            list-style: none;
-        }
-
-        .main-nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-
-        .main-nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* Dashboard Container */
-        .dashboard-container {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            flex: 1;
-        }
-
-        /* Panel Common Styles */
-        .panel {
-            background-color: #FF9966;
-            border: 1px solid #333;
-            padding: 20px;
-            color: white;
-        }
-
-        .panel h2, .panel h3 {
-            font-weight: normal;
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-        }
-
-        /* Layout specific */
-        .main-dashboard-section {
-            flex: 2;
-        }
-
-        /* Tindahan Profile Specifics */
-        .tindahan-profile {
-            flex: 1;
-        }
-
-        .profile-img-wrapper {
-            background-color: white;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            border-radius: 8px; /* Soften the edges inside the panel */
-        }
-
-        .profile-img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .profile-details p {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            color: #ffffff;
-            line-height: 1.5;
-        }
-
-        /* KPI Grid */
-        .kpi-grid {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .kpi-card {
-            background-color: #E0FFFF; 
-            border: 1px solid #333;
-            color: #003366;
-            flex: 1;
-            padding: 20px 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .kpi-card span {
-            font-size: 3rem;
-            font-weight: normal;
-            margin-top: 10px;
-            display: block;
-            color: #333;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            color: #333;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #333;
-            text-align: left;
-        }
-
-        th {
-            background-color: #E0FFFF;
-            color: #003366;
-            font-weight: bold;
-        }
-
-        /* Status Badges */
-        .badge-low {
-            color: #D32F2F;
-            font-weight: bold;
-        }
-        
-        .badge-ok {
-            color: #2E7D32;
-            font-weight: bold;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #333;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -217,37 +19,28 @@
         </div>
     </header>
 
-    <!-- Navigation Section -->
+    <!-- Navigation Section (links marked data-admin are hidden from Staff by JavaScript) -->
     <nav class="main-nav">
         <ul class="nav-links">
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="products.html">Product List</a></li>
+            <li><a href="products.html" data-admin>Product List</a></li>
             <li><a href="stock.html">Update Inventory</a></li>
-            <li><a href="reports.html">Online Logbook</a></li>
+            <li><a href="reports.html" data-admin>Online Logbook</a></li>
         </ul>
-        <a href="#" onclick="handleLogout()">Sign Out</a>
+        <a href="#" id="sign-out">Sign Out</a>
     </nav>
 
     <!-- Main Content Area -->
     <main class="dashboard-container">
-        
+
         <!-- Left Column: System Overview & Table -->
-        <section class="panel main-dashboard-section">
+        <section class="panel main-section">
             <h2>Store Overview</h2>
-            
+
             <div class="kpi-grid">
-                <div class="kpi-card">
-                    Total Products
-                    <span id="kpi-total-sku">0</span>
-                </div>
-                <div class="kpi-card">
-                    Total Stock
-                    <span id="kpi-total-units">0</span>
-                </div>
-                <div class="kpi-card">
-                    Low Stock
-                    <span id="kpi-low-stock" style="color: var(--accent-danger);">0</span>
-                </div>
+                <div class="kpi-card">Total Products <span id="kpi-total-sku">0</span></div>
+                <div class="kpi-card">Total Stock <span id="kpi-total-units">0</span></div>
+                <div class="kpi-card">Low Stock <span id="kpi-low-stock" style="color: var(--accent-danger);">0</span></div>
             </div>
 
             <article>
@@ -270,7 +63,7 @@
         </section>
 
         <!-- Right Column: Tindahan Profile -->
-        <aside class="panel tindahan-profile">
+        <aside class="panel side-section">
             <h2>Tindahan Profile</h2>
             <div class="profile-img-wrapper">
                 <img src="sarisari.png" alt="Sari-Sari Store Illustration" class="profile-img">
@@ -279,7 +72,7 @@
                 <p>Store Name: Aling Baby's Tindahan</p>
                 <p>Store Location: Brgy 231 Quezon City</p>
                 <p>Year Established: 2021</p>
-                <p>TindaTrack Username: <strong id="user-role-display">AlingBabyStore</strong></p>
+                <p>TindaTrack Username: <strong id="user-role-display"></strong></p>
             </div>
         </aside>
 
@@ -289,50 +82,8 @@
         <p>&copy; 2026 TindaTrack Inc. | Track Smart Sell Better</p>
     </footer>
 
+    <!-- Link to JavaScript file -->
     <script src="js/app.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Header Date Setup for the visual aesthetic
-            const dateElement = document.getElementById('header-date');
-            const now = new Date();
-            const optionsDate = { month: 'long', day: 'numeric', year: 'numeric' };
-            const optionsDay = { weekday: 'long' };
-            const formattedDate = now.toLocaleDateString('en-US', optionsDate);
-            const formattedDay = now.toLocaleDateString('en-US', optionsDay);
-            dateElement.innerHTML = `${formattedDate} <span class="day-bold">${formattedDay}</span>`;
-
-            // Original Functional Logic
-            try {
-                const db = getStorageData();
-                let totalUnits = 0;
-                let lowStockCount = 0;
-
-                const tbody = document.getElementById('dashboard-table-body');
-                tbody.innerHTML = '';
-
-                db.products.forEach(p => {
-                    totalUnits += p.stock;
-                    const isLow = p.stock <= p.minStock;
-                    if (isLow) lowStockCount++;
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${p.id}</td>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.stock}</td>
-                        <td><span class="${isLow ? 'badge-low' : 'badge-ok'}">${isLow ? 'Low Stock Warning' : 'Optimal'}</span></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                document.getElementById('kpi-total-sku').textContent = db.products.length;
-                document.getElementById('kpi-low-stock').textContent = lowStockCount;
-                document.getElementById('kpi-total-units').textContent = totalUnits;
-            } catch (error) {
-                console.log("Waiting for database connection...");
-            }
-        });
-    </script>
+    
 </body>
 </html>

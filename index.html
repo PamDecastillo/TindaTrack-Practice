@@ -4,180 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TindaTrack Login</title>
-    <style>
-        /* Reset default browser margins and padding */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            height: 100vh; 
-        }
-
-        /* Header Styles */
-        .main-header {
-            text-align: center;
-            padding: 25px 20px;
-        }
-
-        .logo-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 5px; 
-        }
-
-        .full-logo {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .tagline {
-            color: #333;
-            font-size: 1.15rem;
-            margin-top: 4px;
-        }
-
-        /* Store Background and Translucent Overlay */
-        .store-background {
-            flex: 1; 
-            background-image: url('store-background.png');
-            background-size: cover; 
-            background-repeat: no-repeat;
-            background-position: center bottom; 
-            display: flex;
-            justify-content: center; 
-            align-items: center;    
-            padding: 20px;
-        }
-
-        .login-overlay-box {
-            background-color: rgba(255, 255, 255, 0.7); 
-            padding: 35px 40px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-        }
-
-        /* Login Form Components */
-        .login-form h2 {
-            text-align: center;
-            font-weight: normal;
-            font-size: 1.5rem;
-            margin-bottom: 22px;
-            color: #333;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        .login-form input[type="text"],
-        .login-form input[type="password"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ccc;
-            border-radius: 9px; 
-            font-size: 1.1rem;
-            color: #555; 
-        }
-
-        .login-form input::placeholder {
-            color: #999;
-        }
-
-        .forgot-password-link {
-            display: block;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            text-decoration: none; 
-            margin-bottom: 22px;
-        }
-
-        .forgot-password-link:hover {
-            text-decoration: underline; 
-        }
-
-        .login-submit-button {
-            width: 100%;
-            background-color: #5580B5; 
-            color: white;
-            border: none;
-            padding: 13px;
-            border-radius: 9px;
-            font-size: 1.6rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-submit-button:hover {
-            background-color: #446a96; 
-        }
-
-        .arrow {
-            font-weight: bold;
-        }
-
-        /* Error message styling */
-        #auth-error {
-            color: #D32F2F;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-            display: none;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <!-- 1. Header Section -->
+<body class="login-page">
+
+    <!-- Header Section -->
     <header class="main-header">
         <div class="logo-wrapper">
-            <img src="logo.png" alt="TindaTrack Logo" class="full-logo">
+            <img src="logo.png" alt="TindaTrack Logo" class="logo">
         </div>
         <p class="tagline">Hirap mag-track ng paninda?</p>
     </header>
 
-    <!-- 2. Main Content Area (Store Background) -->
+    <!-- Main Content Area (Store Background) -->
     <main class="store-background">
-        <!-- 3. Login Form Overlay -->
+
+        <!-- Login Form Overlay -->
         <div class="login-overlay-box">
-            <form class="login-form" onsubmit="handleLogin(event)">
+            <form class="login-form" id="login-form">
                 <h2>Log-In</h2>
-                
-                <div id="auth-error"></div>
-                
+
+                <div id="auth-error" role="alert"></div>
+
                 <div class="input-group">
-                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <input type="text" id="username" name="username" placeholder="Username" autocomplete="username" required>
                 </div>
 
                 <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" required>
                 </div>
 
                 <a href="#" class="forgot-password-link">Forgot Password?</a>
 
-                <button type="submit" class="login-submit-button">
-                    <span class="arrow">&#10141;</span> 
-                </button>
+                <button type="submit" class="login-submit-button" aria-label="Log in">&#10141;</button>
             </form>
         </div>
+
     </main>
 
-    <!-- Link to the main JS file so handleLogin() works -->
+    <!-- Link to JavaScript file -->
     <script src="js/app.js"></script>
+    
 </body>
 </html>

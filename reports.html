@@ -3,175 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Operations - TindaTrack Inventory</title>
-    <style>
-        /* Base Reset & Variables */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background-color: #F8C86C;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Top Header */
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 15px 30px;
-        }
-
-        .logo {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .date-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-align: right;
-            font-size: 1.2rem;
-            color: #000;
-        }
-
-        .date-text .day-bold {
-            font-weight: bold;
-            display: block;
-            font-size: 1.4rem;
-        }
-
-        .calendar-icon {
-            height: 50px;
-            width: auto;
-        }
-
-        /* Navigation Bar */
-        .main-nav {
-            background-color: #FF9966;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 40px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 50px;
-            list-style: none;
-        }
-
-        .main-nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-
-        .main-nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* Dashboard Container */
-        .dashboard-container {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            flex: 1;
-        }
-
-        /* Panel Common Styles */
-        .panel {
-            background-color: #FF9966;
-            border: 1px solid #333;
-            padding: 20px;
-            color: white;
-        }
-
-        .panel h2, .panel h3 {
-            font-weight: normal;
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-        }
-
-        /* Layout specific */
-        .stock-form-section {
-            flex: 2;
-        }
-
-        .guidelines-aside {
-            flex: 1;
-        }
-
-        /* Form Styling */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #333;
-            border-radius: 4px;
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        button[type="submit"] {
-            background-color: #E0FFFF;
-            color: #003366;
-            border: 1px solid #333;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #b0e0e6;
-        }
-
-        /* Lists */
-        .guidelines-aside ul {
-            padding-left: 20px;
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-
-        .guidelines-aside ul li {
-            margin-bottom: 15px;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #333;
-            color: white;
-        }
-    </style>
+    <title>Online Logbook - TindaTrack Inventory</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -186,143 +19,54 @@
         </div>
     </header>
 
-    <!-- Navigation Section -->
+    <!-- Navigation Section (links marked data-admin are hidden from Staff by JavaScript) -->
     <nav class="main-nav">
         <ul class="nav-links">
             <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="products.html">Product List</a></li>
+            <li><a href="products.html" data-admin>Product List</a></li>
             <li><a href="stock.html">Update Inventory</a></li>
-            <li><a href="reports.html">Online Logbook</a></li>
+            <li><a href="reports.html" data-admin>Online Logbook</a></li>
         </ul>
-        <a href="#" onclick="handleLogout()">Sign Out</a>
+        <a href="#" id="sign-out">Sign Out</a>
     </nav>
 
     <!-- Main Content Area -->
     <main class="dashboard-container">
-        <!-- Stock Transaction Form -->
-        <section class="panel stock-form-section">
-            <h2>Record Inventory Transaction</h2>
-            
-            <form id="stock-form" onsubmit="processTransaction(event)">
-                <div class="form-group">
-                    <label for="trans-type">Transaction Mode</label>
-                    <select id="trans-type" name="trans-type" required>
-                        <option value="Stock In">Stock In (+ Receiving)</option>
-                        <option value="Stock Out">Stock Out (- Dispatch)</option>
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <label for="trans-sku">Select Target SKU</label>
-                    <select id="trans-sku" name="trans-sku" required>
-                        <!-- Populated via script -->
-                    </select>
-                </div>
+        <section class="panel main-section">
+            <h2>Online Logbook</h2>
 
-                <div class="form-group">
-                    <label for="trans-qty">Quantity Units</label>
-                    <input type="number" id="trans-qty" name="trans-qty" min="1" required placeholder="1">
-                </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">Total Stock In <span id="kpi-total-in">0</span></div>
+                <div class="kpi-card">Total Stock Out <span id="kpi-total-out">0</span></div>
+            </div>
 
-                <div class="form-group">
-                    <label for="trans-notes">Log Remarks / Authorization Note</label>
-                    <textarea id="trans-notes" name="trans-notes" rows="3" placeholder="Enter invoice number or release reason..."></textarea>
-                </div>
-
-                <button type="submit">Commit Inventory Operation</button>
-            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>SKU</th>
+                        <th>Product</th>
+                        <th>Type</th>
+                        <th>Qty</th>
+                        <th>Handled by</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody id="logbook-body">
+                    <!-- Rendered dynamically -->
+                </tbody>
+            </table>
         </section>
 
-        <!-- Operation Guidelines Aside -->
-        <aside class="panel guidelines-aside">
-            <h3>Operation Guidelines</h3>
-            <ul>
-                <li>Ensure physical verification before recording <strong>Stock In</strong>.</li>
-                <li><strong>Stock Out</strong> transactions require clearance for high-value items.</li>
-            </ul>
-        </aside>
     </main>
 
     <footer>
         <p>&copy; 2026 TindaTrack Inc. | Track Smart Sell Better</p>
     </footer>
 
+    <!-- Link to JavaScript file -->
     <script src="js/app.js"></script>
-    <script>
-        // Header Date Setup
-        document.addEventListener('DOMContentLoaded', () => {
-            const dateElement = document.getElementById('header-date');
-            const now = new Date();
-            const optionsDate = { month: 'long', day: 'numeric', year: 'numeric' };
-            const optionsDay = { weekday: 'long' };
-            
-            const formattedDate = now.toLocaleDateString('en-US', optionsDate);
-            const formattedDay = now.toLocaleDateString('en-US', optionsDay);
-            
-            dateElement.innerHTML = `${formattedDate} <span class="day-bold">${formattedDay}</span>`;
-            
-            // Trigger initial render for SKU dropdown
-            try {
-                populateSkus();
-            } catch (error) {
-                console.log("Waiting for getStorageData from app.js...");
-            }
-        });
-
-        // Original Functional Logic
-        function populateSkus() {
-            const db = getStorageData();
-            const select = document.getElementById('trans-sku');
-            select.innerHTML = '';
-
-            db.products.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.textContent = `${p.id} - ${p.name} (Current: ${p.stock})`;
-                select.appendChild(opt);
-            });
-        }
-
-        function processTransaction(e) {
-            e.preventDefault();
-            const db = getStorageData();
-            const type = document.getElementById('trans-type').value;
-            const sku = document.getElementById('trans-sku').value;
-            const qty = parseInt(document.getElementById('trans-qty').value, 10);
-            const user = sessionStorage.getItem('inv_session_user') || 'AlingBabyStore'; // Updated default user
-
-            const product = db.products.find(p => p.id === sku);
-
-            if (product) {
-                if (type === 'Stock Out' && product.stock < qty) {
-                    alert('Error: Insufficient stock available.');
-                    return;
-                }
-
-                if (type === 'Stock In') {
-                    product.stock += qty;
-                } else {
-                    product.stock -= qty;
-                }
-
-                // Initialize transactions array if it doesn't exist
-                if (!db.transactions) {
-                    db.transactions = [];
-                }
-
-                db.transactions.unshift({
-                    date: new Date().toISOString().split('T')[0],
-                    sku: sku,
-                    type: type,
-                    qty: qty,
-                    user: user
-                });
-
-                saveStorageData(db);
-                alert('Stock transaction updated successfully.');
-                window.location.href = 'dashboard.html';
-            }
-        }
-    </script>
+    
 </body>
 </html>
