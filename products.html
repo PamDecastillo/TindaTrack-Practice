@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog - TindaTrack Inventory</title>
+    <style>
+        /* Base Reset & Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #F8C86C;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .date-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: right;
+            font-size: 1.2rem;
+            color: #000;
+        }
+
+        .date-text .day-bold {
+            font-weight: bold;
+            display: block;
+            font-size: 1.4rem;
+        }
+
+        .calendar-icon {
+            height: 50px;
+            width: auto;
+        }
+
+        /* Navigation Bar */
+        .main-nav {
+            background-color: #FF9966;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .main-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .main-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Panel Common Styles */
+        .panel {
+            background-color: #FF9966;
+            border: 1px solid #333;
+            padding: 20px;
+            color: white;
+        }
+
+        .panel h2, .panel h3 {
+            font-weight: normal;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        /* Layout specific */
+        .product-list-section {
+            flex: 2;
+        }
+
+        .add-product-aside {
+            flex: 1;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            color: #333;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #333;
+            text-align: left;
+        }
+
+        th {
+            background-color: #E0FFFF;
+            color: #003366;
+            font-weight: bold;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            background-color: #E0FFFF;
+            color: #003366;
+            border: 1px solid #333;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #b0e0e6;
+        }
+
+        .btn-danger {
+            background-color: #D32F2F;
+            color: white;
+            border: 1px solid #333;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="top-header">
+        <img src="logo.png" alt="TindaTrack Logo" class="logo">
+        <div class="date-container">
+            <div class="date-text" id="header-date">
+                <!-- Date is populated by JavaScript -->
+            </div>
+            <img src="calendar.png" alt="Calendar Icon" class="calendar-icon">
+        </div>
+    </header>
+
+    <!-- Navigation Section -->
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="products.html">Product List</a></li>
+            <li><a href="stock.html">Update Inventory</a></li>
+            <li><a href="reports.html">Online Logbook</a></li>
+        </ul>
+        <a href="#" onclick="handleLogout()">Sign Out</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-container">
+        <!-- Product Registry Table -->
+        <section class="panel product-list-section">
+            <h2>Product Master Registry</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Item Designation</th>
+                        <th>Category</th>
+                        <th>Unit Price (₱)</th>
+                        <th>Stock Level</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="product-catalog-body">
+                    <!-- Rendered dynamically -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Add Product Form -->
+        <aside class="panel add-product-aside">
+            <h3>Add New Product</h3>
+            <form id="add-product-form" onsubmit="handleAddProduct(event)">
+                <div class="form-group">
+                    <label for="prod-sku">SKU Code</label>
+                    <input type="text" id="prod-sku" required placeholder="e.g. SKU-104">
+                </div>
+                <div class="form-group">
+                    <label for="prod-name">Product Name</label>
+                    <input type="text" id="prod-name" required placeholder="Product Title">
+                </div>
+                <div class="form-group">
+                    <label for="prod-cat">Category</label>
+                    <input type="text" id="prod-cat" required placeholder="e.g. Hardware">
+                </div>
+                <div class="form-group">
+                    <label for="prod-price">Unit Price (₱)</label>
+                    <input type="number" step="0.01" id="prod-price" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="prod-stock">Initial Quantity</label>
+                    <input type="number" id="prod-stock" required placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="prod-min">Low Stock Threshold</label>
+                    <input type="number" id="prod-min" required placeholder="5">
+                </div>
+                <button type="submit" style="width: 100%;">Register Product</button>
+            </form>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 TindaTrack Inc. | Track Smart Sell Better</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Header Date Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateElement = document.getElementById('header-date');
+            const now = new Date();
+            const optionsDate = { month: 'long', day: 'numeric', year: 'numeric' };
+            const optionsDay = { weekday: 'long' };
+            
+            const formattedDate = now.toLocaleDateString('en-US', optionsDate);
+            const formattedDay = now.toLocaleDateString('en-US', optionsDay);
+            
+            dateElement.innerHTML = `${formattedDate} <span class="day-bold">${formattedDay}</span>`;
+            
+            // Trigger initial render
+            try {
+                renderProducts();
+            } catch (error) {
+                console.log("Waiting for database connection...");
+            }
+        });
+
+        // Original Functional Logic
+        function renderProducts() {
+            const db = getStorageData();
+            const tbody = document.getElementById('product-catalog-body');
+            tbody.innerHTML = '';
+
+            db.products.forEach((p, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td>₱${parseFloat(p.price).toFixed(2)}</td>
+                    <td>${p.stock}</td>
+                    <td><button class="btn-danger" onclick="removeProduct(${index})">Remove</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function handleAddProduct(e) {
+            e.preventDefault();
+            const db = getStorageData();
+            
+            const newProd = {
+                id: document.getElementById('prod-sku').value,
+                name: document.getElementById('prod-name').value,
+                category: document.getElementById('prod-cat').value,
+                price: parseFloat(document.getElementById('prod-price').value),
+                stock: parseInt(document.getElementById('prod-stock').value, 10),
+                minStock: parseInt(document.getElementById('prod-min').value, 10)
+            };
+
+            db.products.push(newProd);
+            saveStorageData(db);
+            e.target.reset();
+            renderProducts();
+        }
+
+        function removeProduct(index) {
+            const db = getStorageData();
+            db.products.splice(index, 1);
+            saveStorageData(db);
+            renderProducts();
+        }
+    </script>
+</body>
+</html>
